@@ -47,17 +47,18 @@
     skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
+    // GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
     
-    //Must define scene size based off of skView size (screen/viewport size)
-    scene.size = skView.bounds.size;
+    // Using sceneWithSize which triggers my initWithSize method within the scene class. From reading, my understanding is that this approach
+    // is more efficient and called earlier than didMoveToScene.
+    SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
     
-    //Then we set the scalemode which default is set to AspectFill
+    // Set the scalemode which default is set to AspectFill
     scene.scaleMode = SKSceneScaleModeAspectFill;
     
-    //Log out the size of the skView (width/height) for debugging purposes
-    NSLog(@"width: %f", skView.bounds.size.width);
-    NSLog(@"width: %f", skView.bounds.size.height);
+    //NSLog the size of the skView (width/height) for debugging purposes
+    NSLog(@"screen width: %f", skView.bounds.size.width);
+    NSLog(@"screen height: %f", skView.bounds.size.height);
     
     // Present the scene.
     [skView presentScene:scene];

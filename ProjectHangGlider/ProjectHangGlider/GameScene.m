@@ -12,24 +12,82 @@
 
 #import "GameScene.h"
 
+@interface GameScene ()
+
+@end
+
+// Define my constants for category bitmasks.
+// These allow for us to determine which physics bodies collide within the physics world.
+static const uint32_t playerCategory    = 1;
+static const uint32_t buildingCategory  = 2;
+static const uint32_t groundCategory    = 4;
+static const uint32_t edgeCategory      = 8;
+
 @implementation GameScene
 
--(void)didMoveToView:(SKView *)view {
-    /* Setup your scene here */
-    //Note: Targeting iphone 6 landscape 667x375/1334x750
-    self.backgroundColor = [SKColor whiteColor];
-    
-    //Add physicsBody to the scene which will trigger collision/contact on edges of the screen
-    self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
-    
-    //Change gravity settings of the physics world
-    self.physicsWorld.gravity = CGVectorMake(0, -.05);
-    
-    //Call custom method to build scene
-    [self setScene];
 
+-(void)didBeginContact:(SKPhysicsContact *)contact {
+    
+    // create placeholder reference for the "non player" object
+    // This helps us quickly exclude the player and deal directly with objects that the player is colliding into.
+    SKPhysicsBody *collisionObject;
+    
+    //Compare bitmask category numbers (having the player be cat=1 helps with this approach)
+    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask) {
+        collisionObject = contact.bodyB;
+    } else {
+        collisionObject = contact.bodyA;
+    }
+    
+    if (collisionObject.categoryBitMask == buildingCategory) {
+        NSLog(@"Building was hit!");
+        //  SKAction *playSFX = [SKAction playSoundFileNamed:@"brickhit.caf" waitForCompletion:NO];
+        // [self runAction:playSFX];
+    }
+    
+    if (collisionObject.categoryBitMask == edgeCategory) {
+        NSLog(@"Scene edge was hit!");
+        // SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
+        //  [self runAction:playSFX];
+        
+    }
+    
+    if (collisionObject.categoryBitMask == groundCategory) {
+        NSLog(@"Ground was hit!");
+        // SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
+        //  [self runAction:playSFX];
+        
+    }
     
 }
+
+
+//Not using didMoveToView. Instead refer to initWithSize method.
+-(void)didMoveToView:(SKView *)view {
+
+}
+
+-(id)initWithSize:(CGSize)size {
+    if (self = [super initWithSize:size]) {
+        //Note: Targeting iphone 6 landscape 667x375/1334x750
+        self.backgroundColor = [SKColor whiteColor];
+    
+        //Add physicsBody to the scene which will trigger collision/contact on edges of the screen
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsBody.categoryBitMask = edgeCategory;
+    
+        //Change gravity settings of the physics world
+        self.physicsWorld.gravity = CGVectorMake(0, -.05);
+        
+        //Need to set contact delegate to self in order to register contacts
+        self.physicsWorld.contactDelegate = self;
+    
+        //Call custom method to build scene
+        [self setScene];
+    }
+    return self;
+}
+
 
 -(void)setScene {
     
@@ -49,6 +107,7 @@
     ground.position = CGPointMake(CGRectGetMidX(self.frame),ground.size.height/2);
     ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ground.frame.size];
     ground.physicsBody.dynamic = NO;
+    ground.physicsBody.categoryBitMask = groundCategory;
     [self addChild:ground];
     
     //Add Building 1
@@ -56,6 +115,7 @@
     building1.position = CGPointMake(200,(building1.size.height/2)+ground.size.height);
     building1.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building1.frame.size];
     building1.physicsBody.dynamic = NO;
+    building1.physicsBody.categoryBitMask = buildingCategory;
     building1.name = @"building1";
     [self addChild:building1];
     
@@ -64,6 +124,7 @@
     building2.position = CGPointMake(285,(building2.size.height/2)+ground.size.height);
     building2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building2.frame.size];
     building2.physicsBody.dynamic = NO;
+    building2.physicsBody.categoryBitMask = buildingCategory;
     building2.name = @"building2";
     [self addChild:building2];
     
@@ -72,6 +133,7 @@
     building3.position = CGPointMake(410,(building3.size.height/2)+ground.size.height);
     building3.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building3.frame.size];
     building3.physicsBody.dynamic = NO;
+    building3.physicsBody.categoryBitMask = buildingCategory;
     building3.name = @"building3";
     [self addChild:building3];
     
@@ -83,12 +145,18 @@
     player.physicsBody.friction = 0;
     player.physicsBody.linearDamping = 0;
     player.physicsBody.restitution = 1.0f;
+    player.physicsBody.categoryBitMask = playerCategory;
+    player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
+    
+    
+    
     [self addChild:player];
     
     
-    // create the vector
+    
+    // create the vector to apply to player
     CGVector myVector = CGVectorMake(20, 20);
-    // apply the vector
+    // apply the vector as an impulse to launch player to bouncy land.
     [player.physicsBody applyImpulse:myVector];
     
     
