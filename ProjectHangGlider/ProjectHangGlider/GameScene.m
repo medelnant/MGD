@@ -16,34 +16,59 @@
 
 -(void)didMoveToView:(SKView *)view {
     /* Setup your scene here */
-    SKLabelNode *myLabel = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
+    //Note: Targeting iphone 6 landscape 667x375/1334x750
+    self.backgroundColor = [SKColor whiteColor];
     
-    myLabel.text = @"Hello, World!";
-    myLabel.fontSize = 65;
-    myLabel.position = CGPointMake(CGRectGetMidX(self.frame),
-                                   CGRectGetMidY(self.frame));
+    //Call custom method to build scene
+    [self setScene];
+
     
-    [self addChild:myLabel];
+}
+
+-(void)setScene {
+    
+    //Add Background
+    SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"background"];
+    background.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
+    [self addChild:background];
+    
+    //Add Clouds
+    SKSpriteNode *clouds = [SKSpriteNode spriteNodeWithImageNamed:@"clouds"];
+    clouds.position = CGPointMake(CGRectGetMidX(self.frame),(self.frame.size.height-clouds.size.height)-20);
+    clouds.alpha = .5;
+    [self addChild:clouds];
+    
+    
+    //Add Ground
+    SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"ground"];
+    ground.position = CGPointMake(CGRectGetMidX(self.frame),ground.size.height/2);
+    [self addChild:ground];
+    
+    //Add Building 1
+    SKSpriteNode *building1 = [SKSpriteNode spriteNodeWithImageNamed:@"building1"];
+    building1.position = CGPointMake(100,(building1.size.height/2)+ground.size.height);
+    [self addChild:building1];
+    
+    //Add Building 2
+    SKSpriteNode *building2 = [SKSpriteNode spriteNodeWithImageNamed:@"building2"];
+    building2.position = CGPointMake(185,(building2.size.height/2)+ground.size.height);
+    [self addChild:building2];
+    
+    //Add Building 3
+    SKSpriteNode *building3 = [SKSpriteNode spriteNodeWithImageNamed:@"building3"];
+    building3.position = CGPointMake(310,(building3.size.height/2)+ground.size.height);
+    [self addChild:building3];
+    
+    //Add Player
+    SKSpriteNode *player = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
+    player.position = CGPointMake(50, 250);
+    [self addChild:player];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    /* Called when a touch begins */
+
     
-    for (UITouch *touch in touches) {
-        CGPoint location = [touch locationInNode:self];
-        
-        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
-        
-        sprite.xScale = 0.5;
-        sprite.yScale = 0.5;
-        sprite.position = location;
-        
-        SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
-        
-        [sprite runAction:[SKAction repeatActionForever:action]];
-        
-        [self addChild:sprite];
-    }
+    
 }
 
 -(void)update:(CFTimeInterval)currentTime {

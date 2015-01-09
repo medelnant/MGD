@@ -37,7 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Configure the view.
     SKView * skView = (SKView *)self.view;
     skView.showsFPS = YES;
@@ -47,16 +47,28 @@
     
     // Create and configure the scene.
     GameScene *scene = [GameScene unarchiveFromFile:@"GameScene"];
+    
+    //Must define scene size based off of skView size (screen/viewport size)
+    scene.size = skView.bounds.size;
+    
+    //Then we set the scalemode which default is set to AspectFill
     scene.scaleMode = SKSceneScaleModeAspectFill;
+    
+    //Log out the size of the skView (width/height) for debugging purposes
+    NSLog(@"width: %f", skView.bounds.size.width);
+    NSLog(@"width: %f", skView.bounds.size.height);
     
     // Present the scene.
     [skView presentScene:scene];
+
 }
+
 
 - (BOOL)shouldAutorotate
 {
     return YES;
 }
+
 
 - (NSUInteger)supportedInterfaceOrientations
 {

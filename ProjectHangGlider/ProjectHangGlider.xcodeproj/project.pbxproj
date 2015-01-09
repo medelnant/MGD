@@ -68,6 +68,7 @@
 		53C46EE51A5F2CF500176B29 = {
 			isa = PBXGroup;
 			children = (
+				53C46F201A5F5AB600176B29 /* images */,
 				53C46EF01A5F2CF600176B29 /* ProjectHangGlider */,
 				53C46F0F1A5F2CF600176B29 /* ProjectHangGliderTests */,
 				53C46EEF1A5F2CF600176B29 /* Products */,
@@ -125,6 +126,13 @@
 				53C46F111A5F2CF600176B29 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		53C46F201A5F5AB600176B29 /* images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
