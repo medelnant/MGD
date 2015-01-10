@@ -23,9 +23,16 @@ static const uint32_t buildingCategory  = 2;
 static const uint32_t groundCategory    = 4;
 static const uint32_t edgeCategory      = 8;
 
+//define bool bit/flag to track firstTouch used to trigger startGamePlay method
+
 @implementation GameScene
+{
+@private
+    //Flag to account for first touch to init sequence.
+    BOOL firstTouch;
+}
 
-
+//Default method for handling contact between different physics bodies(SpriteNodes)
 -(void)didBeginContact:(SKPhysicsContact *)contact {
     
     // create placeholder reference for the "non player" object
@@ -41,32 +48,40 @@ static const uint32_t edgeCategory      = 8;
     
     if (collisionObject.categoryBitMask == buildingCategory) {
         NSLog(@"Building was hit!");
-        //  SKAction *playSFX = [SKAction playSoundFileNamed:@"brickhit.caf" waitForCompletion:NO];
-        // [self runAction:playSFX];
+        [self runAction:_buildingTick];
     }
     
     if (collisionObject.categoryBitMask == edgeCategory) {
         NSLog(@"Scene edge was hit!");
-        // SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
-        //  [self runAction:playSFX];
+        [self runAction:_edgeBoing];
         
     }
     
     if (collisionObject.categoryBitMask == groundCategory) {
         NSLog(@"Ground was hit!");
-        // SKAction *playSFX = [SKAction playSoundFileNamed:@"blip.caf" waitForCompletion:NO];
-        //  [self runAction:playSFX];
+        [self runAction:_groundSplat];
         
     }
     
 }
 
 
-//Not using didMoveToView. Instead refer to initWithSize method.
+//Default method called when scene is fully loaded i believe. Utilizing this for pre-loading audio.
 -(void)didMoveToView:(SKView *)view {
-
+    
+    //Define sound actions for preloading when scene/view is loaded
+    //Bit of a bummer that you can't set audio levels for playSoundFileNamed within SKAction :/
+    //Suggestions online say to use AVAudioPlayer which doesn't meet the requirements for this assignment since we need to use proprietary SpriteKit methods to play audio
+    
+    _edgeBoing      = [SKAction playSoundFileNamed:@"boing.mp3" waitForCompletion:NO];
+    _buildingTick   = [SKAction playSoundFileNamed:@"bulbbreaking.mp3" waitForCompletion:NO];
+    _groundSplat    = [SKAction playSoundFileNamed:@"splat.mp3" waitForCompletion:NO];
+    _buildingPunch  = [SKAction playSoundFileNamed:@"punch.mp3" waitForCompletion:NO];
+    _playerTouch    = [SKAction playSoundFileNamed:@"camerashutter.mp3" waitForCompletion:NO];
+    
 }
 
+//Default method - main init trigger from view controller instatiating scene to load.
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         //Note: Targeting iphone 6 landscape 667x375/1334x750
@@ -76,20 +91,38 @@ static const uint32_t edgeCategory      = 8;
         self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
         self.physicsBody.categoryBitMask = edgeCategory;
     
-        //Change gravity settings of the physics world
-        self.physicsWorld.gravity = CGVectorMake(0, -.05);
+        self.physicsWorld.gravity = CGVectorMake(0, 0);
+        
         
         //Need to set contact delegate to self in order to register contacts
         self.physicsWorld.contactDelegate = self;
     
         //Call custom method to build scene
         [self setScene];
+        
     }
     return self;
 }
 
-
+//Custom method for building the entire scene
 -(void)setScene {
+    
+    //Instruction Text
+    _instructionLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Bold"];
+    _instructionLabel.text = @"Click anywhere to start";
+    _instructionLabel.fontColor = [SKColor blackColor];
+    _instructionLabel.fontSize = 25;
+    _instructionLabel.position = CGPointMake(CGRectGetMidX(self.frame), 250);
+    [self addChild:_instructionLabel];
+    
+    //Description Text
+    _descriptionLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    _descriptionLabel.text = @"Make sure to touch buildings and player(Joe Hanglider) for required sound effects.";
+    _descriptionLabel.fontColor = [SKColor blackColor];
+    _descriptionLabel.fontSize = 10;
+    _descriptionLabel.position = CGPointMake(CGRectGetMidX(self.frame), 235);
+    [self addChild:_descriptionLabel];
+    
     
     //Add Background
     SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"background"];
@@ -138,30 +171,21 @@ static const uint32_t edgeCategory      = 8;
     [self addChild:building3];
     
     //Add Player
-    SKSpriteNode *player = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
-    player.position = CGPointMake(50, 250);
-    player.name = @"player";
-    player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:player.frame.size.width/2];
-    player.physicsBody.friction = 0;
-    player.physicsBody.linearDamping = 0;
-    player.physicsBody.restitution = 1.0f;
-    player.physicsBody.categoryBitMask = playerCategory;
-    player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
-    
-    
-    
-    [self addChild:player];
-    
-    
-    
-    // create the vector to apply to player
-    CGVector myVector = CGVectorMake(20, 20);
-    // apply the vector as an impulse to launch player to bouncy land.
-    [player.physicsBody applyImpulse:myVector];
+    _player = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
+    _player.position = CGPointMake(50, 250);
+    _player.name = @"player";
+    _player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:_player.frame.size.width/2];
+    _player.physicsBody.friction = 0;
+    _player.physicsBody.linearDamping = 0;
+    _player.physicsBody.restitution = 1.0f;
+    _player.physicsBody.categoryBitMask = playerCategory;
+    _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
+    [self addChild:_player];
     
     
 }
 
+//Default method to account for touches within the scene
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     /*
@@ -170,6 +194,12 @@ static const uint32_t edgeCategory      = 8;
     Same applies for overlapping nodes.
         -- Will fire touch event for all nodes at that given touch point
     */
+    
+    if(firstTouch == NO) {
+        NSLog(@"firstTouch!");
+        [self startGamePlay];
+        firstTouch = YES;
+    }
     
     for (UITouch *touch in touches)
     {
@@ -184,21 +214,25 @@ static const uint32_t edgeCategory      = 8;
                 {
                     //Building 1
                     NSLog(@"Building1 Clicked!");
+                    [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"building2"])
                 {
                     //Building2
                     NSLog(@"Building2 Clicked!");
+                    [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"building3"])
                 {
                     //Building3
                     NSLog(@"Building3 Clicked!");
+                    [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"player"])
                 {
                     //Player
                     NSLog(@"Player Clicked!");
+                    [self runAction:_playerTouch];
                 }
                 else {
                     //Do nothing
@@ -207,6 +241,48 @@ static const uint32_t edgeCategory      = 8;
         }
     }
     
+    
+}
+
+//Custom method to init gameplay sequence. Otherwise it would be more annoying than it already is.
+-(void)startGamePlay {
+    
+    //Remove SKLabelNodes from scene
+    [_instructionLabel removeFromParent];
+    [_descriptionLabel removeFromParent];
+    
+    //Trigger Background music to start playing
+    [self playBackgroundAudioTrack];
+    
+    //Set world gravity
+    //Change gravity settings of the physics world
+    self.physicsWorld.gravity = CGVectorMake(0, -.05);
+    
+    // create the vector to apply to player
+    CGVector myVector = CGVectorMake(20, 20);
+    // apply the vector as an impulse to launch player to bouncy land.
+    [_player.physicsBody applyImpulse:myVector];
+}
+
+//Custom method to play background audio track
+-(void)playBackgroundAudioTrack {
+    
+    //Play Soundtrack/Background Music utilizing AVFoundation AVAudioPlayer
+    
+    //Specify url of file location
+    NSURL * soundTrackURL = [NSURL fileURLWithPath:[[NSBundle mainBundle]pathForResource:@"soundtrack" ofType:@"mp3"]];
+    
+    //Alloc init and set track for player to play
+    _soundTrackPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:soundTrackURL error:nil];
+    
+    //Specify num of loops (negative number means infinite loops)
+    _soundTrackPlayer.numberOfLoops = -1;
+    
+    //Set Volumne to be substantially lower
+    _soundTrackPlayer.volume = .25;
+    
+    //Play background audio track
+    [_soundTrackPlayer play];
     
 }
 

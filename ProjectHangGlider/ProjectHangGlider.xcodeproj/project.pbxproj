@@ -16,6 +16,19 @@
 		53C46F041A5F2CF600176B29 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F031A5F2CF600176B29 /* Images.xcassets */; };
 		53C46F071A5F2CF600176B29 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F051A5F2CF600176B29 /* LaunchScreen.xib */; };
 		53C46F131A5F2CF600176B29 /* ProjectHangGliderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46F121A5F2CF600176B29 /* ProjectHangGliderTests.m */; };
+		53C46F371A60AFA400176B29 /* ambulance.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F2B1A60AFA400176B29 /* ambulance.mp3 */; };
+		53C46F381A60AFA400176B29 /* blop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F2C1A60AFA400176B29 /* blop.mp3 */; };
+		53C46F391A60AFA400176B29 /* boing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F2D1A60AFA400176B29 /* boing.mp3 */; };
+		53C46F3A1A60AFA400176B29 /* bulbbreaking.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F2E1A60AFA400176B29 /* bulbbreaking.mp3 */; };
+		53C46F3B1A60AFA400176B29 /* camerashutter.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F2F1A60AFA400176B29 /* camerashutter.mp3 */; };
+		53C46F3C1A60AFA400176B29 /* fart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F301A60AFA400176B29 /* fart.mp3 */; };
+		53C46F3D1A60AFA400176B29 /* punch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F311A60AFA400176B29 /* punch.mp3 */; };
+		53C46F3E1A60AFA400176B29 /* soundtrack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F321A60AFA400176B29 /* soundtrack.mp3 */; };
+		53C46F3F1A60AFA400176B29 /* splat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F331A60AFA400176B29 /* splat.mp3 */; };
+		53C46F401A60AFA400176B29 /* tick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F341A60AFA400176B29 /* tick.mp3 */; };
+		53C46F411A60AFA400176B29 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F351A60AFA400176B29 /* wind.mp3 */; };
+		53C46F421A60AFA400176B29 /* woosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F361A60AFA400176B29 /* woosh.mp3 */; };
+		53C46F451A60B54800176B29 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C46F441A60B54800176B29 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +58,19 @@
 		53C46F0C1A5F2CF600176B29 /* ProjectHangGliderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectHangGliderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		53C46F111A5F2CF600176B29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53C46F121A5F2CF600176B29 /* ProjectHangGliderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectHangGliderTests.m; sourceTree = "<group>"; };
+		53C46F2B1A60AFA400176B29 /* ambulance.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ambulance.mp3; sourceTree = "<group>"; };
+		53C46F2C1A60AFA400176B29 /* blop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = blop.mp3; sourceTree = "<group>"; };
+		53C46F2D1A60AFA400176B29 /* boing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boing.mp3; sourceTree = "<group>"; };
+		53C46F2E1A60AFA400176B29 /* bulbbreaking.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bulbbreaking.mp3; sourceTree = "<group>"; };
+		53C46F2F1A60AFA400176B29 /* camerashutter.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = camerashutter.mp3; sourceTree = "<group>"; };
+		53C46F301A60AFA400176B29 /* fart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fart.mp3; sourceTree = "<group>"; };
+		53C46F311A60AFA400176B29 /* punch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punch.mp3; sourceTree = "<group>"; };
+		53C46F321A60AFA400176B29 /* soundtrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = soundtrack.mp3; sourceTree = "<group>"; };
+		53C46F331A60AFA400176B29 /* splat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = splat.mp3; sourceTree = "<group>"; };
+		53C46F341A60AFA400176B29 /* tick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tick.mp3; sourceTree = "<group>"; };
+		53C46F351A60AFA400176B29 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
+		53C46F361A60AFA400176B29 /* woosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = woosh.mp3; sourceTree = "<group>"; };
+		53C46F441A60B54800176B29 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53C46F451A60B54800176B29 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +95,7 @@
 		53C46EE51A5F2CF500176B29 = {
 			isa = PBXGroup;
 			children = (
-				53C46F201A5F5AB600176B29 /* images */,
+				53C46F441A60B54800176B29 /* AVFoundation.framework */,
 				53C46EF01A5F2CF600176B29 /* ProjectHangGlider */,
 				53C46F0F1A5F2CF600176B29 /* ProjectHangGliderTests */,
 				53C46EEF1A5F2CF600176B29 /* Products */,
@@ -87,6 +114,7 @@
 		53C46EF01A5F2CF600176B29 /* ProjectHangGlider */ = {
 			isa = PBXGroup;
 			children = (
+				53C46F431A60AFAD00176B29 /* sounds */,
 				53C46EF51A5F2CF600176B29 /* AppDelegate.h */,
 				53C46EF61A5F2CF600176B29 /* AppDelegate.m */,
 				53C46EF81A5F2CF600176B29 /* GameScene.h */,
@@ -128,11 +156,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		53C46F201A5F5AB600176B29 /* images */ = {
+		53C46F431A60AFAD00176B29 /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				53C46F2B1A60AFA400176B29 /* ambulance.mp3 */,
+				53C46F2C1A60AFA400176B29 /* blop.mp3 */,
+				53C46F2D1A60AFA400176B29 /* boing.mp3 */,
+				53C46F2E1A60AFA400176B29 /* bulbbreaking.mp3 */,
+				53C46F2F1A60AFA400176B29 /* camerashutter.mp3 */,
+				53C46F301A60AFA400176B29 /* fart.mp3 */,
+				53C46F311A60AFA400176B29 /* punch.mp3 */,
+				53C46F321A60AFA400176B29 /* soundtrack.mp3 */,
+				53C46F331A60AFA400176B29 /* splat.mp3 */,
+				53C46F341A60AFA400176B29 /* tick.mp3 */,
+				53C46F351A60AFA400176B29 /* wind.mp3 */,
+				53C46F361A60AFA400176B29 /* woosh.mp3 */,
 			);
-			name = images;
+			name = sounds;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,9 +257,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				53C46F071A5F2CF600176B29 /* LaunchScreen.xib in Resources */,
+				53C46F3C1A60AFA400176B29 /* fart.mp3 in Resources */,
+				53C46F3B1A60AFA400176B29 /* camerashutter.mp3 in Resources */,
+				53C46F3F1A60AFA400176B29 /* splat.mp3 in Resources */,
 				53C46F041A5F2CF600176B29 /* Images.xcassets in Resources */,
+				53C46F371A60AFA400176B29 /* ambulance.mp3 in Resources */,
+				53C46F391A60AFA400176B29 /* boing.mp3 in Resources */,
+				53C46F421A60AFA400176B29 /* woosh.mp3 in Resources */,
+				53C46F401A60AFA400176B29 /* tick.mp3 in Resources */,
+				53C46F3D1A60AFA400176B29 /* punch.mp3 in Resources */,
 				53C46EFC1A5F2CF600176B29 /* GameScene.sks in Resources */,
 				53C46F021A5F2CF600176B29 /* Main.storyboard in Resources */,
+				53C46F411A60AFA400176B29 /* wind.mp3 in Resources */,
+				53C46F3A1A60AFA400176B29 /* bulbbreaking.mp3 in Resources */,
+				53C46F3E1A60AFA400176B29 /* soundtrack.mp3 in Resources */,
+				53C46F381A60AFA400176B29 /* blop.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +483,7 @@
 				53C46F181A5F2CF600176B29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		53C46F191A5F2CF600176B29 /* Build configuration list for PBXNativeTarget "ProjectHangGliderTests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +492,7 @@
 				53C46F1B1A5F2CF600176B29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
