@@ -47,18 +47,18 @@ static const uint32_t edgeCategory      = 8;
     }
     
     if (collisionObject.categoryBitMask == buildingCategory) {
-        NSLog(@"Building was hit!");
+        //NSLog(@"Building was hit!");
         [self runAction:_buildingTick];
     }
     
     if (collisionObject.categoryBitMask == edgeCategory) {
-        NSLog(@"Scene edge was hit!");
+        //NSLog(@"Scene edge was hit!");
         [self runAction:_edgeBoing];
         
     }
     
     if (collisionObject.categoryBitMask == groundCategory) {
-        NSLog(@"Ground was hit!");
+        //NSLog(@"Ground was hit!");
         [self runAction:_groundSplat];
         
     }
@@ -196,7 +196,7 @@ static const uint32_t edgeCategory      = 8;
     */
     
     if(firstTouch == NO) {
-        NSLog(@"firstTouch!");
+        NSLog(@"firstTouch! - call startGamePlay method");
         [self startGamePlay];
         firstTouch = YES;
     }
@@ -213,25 +213,25 @@ static const uint32_t edgeCategory      = 8;
                 if ([spriteNode.name isEqualToString:@"building1"])
                 {
                     //Building 1
-                    NSLog(@"Building1 Clicked!");
+                    //NSLog(@"Building1 Clicked!");
                     [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"building2"])
                 {
                     //Building2
-                    NSLog(@"Building2 Clicked!");
+                    //NSLog(@"Building2 Clicked!");
                     [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"building3"])
                 {
                     //Building3
-                    NSLog(@"Building3 Clicked!");
+                    //NSLog(@"Building3 Clicked!");
                     [self runAction:_buildingPunch];
                 }
                 else if ([spriteNode.name isEqualToString:@"player"])
                 {
                     //Player
-                    NSLog(@"Player Clicked!");
+                    //NSLog(@"Player Clicked!");
                     [self runAction:_playerTouch];
                 }
                 else {
