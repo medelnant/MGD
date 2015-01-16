@@ -16,6 +16,12 @@
 
 @end
 
+
+//Define animation speed constants
+static const float CLOUDS_PPS = 10;
+//static const float BUILDINGS_PPS = 30;
+
+
 // Define my constants for category bitmasks.
 // These allow for us to determine which physics bodies collide within the physics world.
 static const uint32_t playerCategory    = 1;
@@ -53,7 +59,7 @@ static const uint32_t edgeCategory      = 8;
     
     if (collisionObject.categoryBitMask == edgeCategory) {
         //NSLog(@"Scene edge was hit!");
-        [self runAction:_edgeBoing];
+        //[self runAction:_edgeBoing];
         
     }
     
@@ -130,10 +136,11 @@ static const uint32_t edgeCategory      = 8;
     [self addChild:background];
     
     //Add Clouds
-    SKSpriteNode *clouds = [SKSpriteNode spriteNodeWithImageNamed:@"clouds"];
-    clouds.position = CGPointMake(CGRectGetMidX(self.frame),(self.frame.size.height-clouds.size.height)-20);
-    clouds.alpha = .5;
-    [self addChild:clouds];
+    _clouds = [SKSpriteNode spriteNodeWithImageNamed:@"clouds"];
+    _clouds.position = CGPointMake(CGRectGetMidX(self.frame),(self.frame.size.height-_clouds.size.height)-20);
+    _clouds.alpha = .5;
+    _clouds.name = @"clouds";
+    [self addChild:_clouds];
     
     //Add Ground
     SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"ground"];
@@ -172,7 +179,7 @@ static const uint32_t edgeCategory      = 8;
     
     //Add Player
     _player = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
-    _player.position = CGPointMake(50, 250);
+    _player.position = CGPointMake(CGRectGetMidX(self.frame), 300);
     _player.name = @"player";
     _player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:_player.frame.size.width/2];
     _player.physicsBody.friction = 0;
@@ -200,6 +207,11 @@ static const uint32_t edgeCategory      = 8;
         [self startGamePlay];
         firstTouch = YES;
     }
+    
+    // create the vector to apply to player
+    CGVector myVector = CGVectorMake(0, 15);
+    // apply the vector as an impulse to launch player to bouncy land.
+    [_player.physicsBody applyImpulse:myVector];
     
     for (UITouch *touch in touches)
     {
@@ -256,12 +268,7 @@ static const uint32_t edgeCategory      = 8;
     
     //Set world gravity
     //Change gravity settings of the physics world
-    self.physicsWorld.gravity = CGVectorMake(0, -.05);
-    
-    // create the vector to apply to player
-    CGVector myVector = CGVectorMake(20, 20);
-    // apply the vector as an impulse to launch player to bouncy land.
-    [_player.physicsBody applyImpulse:myVector];
+    self.physicsWorld.gravity = CGVectorMake(0, -1.5);
 }
 
 //Custom method to play background audio track
@@ -286,8 +293,58 @@ static const uint32_t edgeCategory      = 8;
     
 }
 
+//Custom Helper Method for Animating Clouds right to left
+-(void) scrollClouds {
+    
+    [self enumerateChildNodesWithName:@"clouds" usingBlock:^(SKNode *node, BOOL *stop) {
+        
+        //Placeholder node that will be set to the node being enumerated within each loop
+        SKSpriteNode *clouds = (SKSpriteNode*) node;
+        
+        //Setting the speed/velocity of the node. Only affecting the x for the horizontal scrolling effect
+        CGPoint bgVelocity = CGPointMake((-1) * CLOUDS_PPS, 0);
+        
+        //Calculated point
+        CGPoint distanceToMove = CGPointMultiplyScalar(bgVelocity, _dt);
+        clouds.position = CGPointAdd(clouds.position, distanceToMove);
+        
+        //Check if position is past left edge of scene
+        if(clouds.position.x <= -self.size.width) {
+            NSLog(@"We are moving past that certain point!");
+        }
+        
+        
+    }];
+    
+}
+
+//Custom Helper Methods
+//found via Ray Wenderlich forums
+static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b) {
+    return CGPointMake(a.x * b,a.y *b);
+}
+
+static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
+    return CGPointMake(a.x + b.x, a.y + b.y);
+}
+
+
+
 -(void)update:(CFTimeInterval)currentTime {
-    /* Called before each frame is rendered */
+    
+    //Conditional to set the deltaTime
+    if(_lastFrameUpdateTimeInt) {
+        _dt = currentTime - _lastFrameUpdateTimeInt;
+    } else {
+        _dt = 0;
+    }
+    
+    //Capture the time for use on next user for lastFrameUpdateTimeInt
+    _lastFrameUpdateTimeInt = currentTime;
+    
+    //Call Methods we want to update
+    [self scrollClouds];
+    
 }
 
 @end

@@ -12,10 +12,22 @@
 #import <SpriteKit/SpriteKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface GameScene : SKScene <SKPhysicsContactDelegate> 
+@interface GameScene : SKScene <SKPhysicsContactDelegate> {
+
+    //Define time interval for handling delta time
+    NSTimeInterval _dt;
+    
+    //Define time interval for us to set within the update method to capture last updated
+    NSTimeInterval _lastFrameUpdateTimeInt;
+    
+}
+
 
 //Define player spriteNode
 @property (strong, nonatomic) SKSpriteNode *player;
+
+//Define clouds BG element
+@property (strong, nonatomic) SKSpriteNode *clouds;
 
 //Define Sound Actions
 @property (strong, nonatomic) SKAction *edgeBoing;
