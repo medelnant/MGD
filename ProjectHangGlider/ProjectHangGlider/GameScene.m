@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 1 - Proof
+//  Week 2 - Game Alpha
 //
 //  Created by vAesthetic on 1/8/15.
 //  Copyright (c) 2015 medelnant. All rights reserved.
@@ -36,6 +36,8 @@ static const uint32_t edgeCategory      = 8;
 @private
     //Flag to account for first touch to init sequence.
     BOOL firstTouch;
+    
+    //Global pause bit/flag within game scene
     BOOL gamePaused;
 }
 
@@ -98,7 +100,6 @@ static const uint32_t edgeCategory      = 8;
         //Add physicsBody to the scene which will trigger collision/contact on edges of the screen
         self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
         self.physicsBody.categoryBitMask = edgeCategory;
-    
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         
         
@@ -310,9 +311,11 @@ static const uint32_t edgeCategory      = 8;
 //Custom Helper Method for Animating Clouds right to left
 -(void) scrollClouds {
     
+    //For each instance or child node with the name of clouds...do something
+    //Similar to a loop construct but simply enumerating through all instances of provided name.
     [self enumerateChildNodesWithName:@"clouds" usingBlock:^(SKNode *node, BOOL *stop) {
         
-        //Placeholder node that will be set to the node being enumerated within each loop
+        //Placeholder node that will be set to the node being enumerated.
         SKSpriteNode *clouds = (SKSpriteNode*) node;
         
         //Setting the speed/velocity of the node. Only affecting the x for the horizontal scrolling effect
@@ -322,9 +325,11 @@ static const uint32_t edgeCategory      = 8;
         CGPoint distanceToMove = CGPointMultiplyScalar(bgVelocity, _dt);
         clouds.position = CGPointAdd(clouds.position, distanceToMove);
         
+        
         //Check if position is past left edge of scene
+        //Buggy.. needs to be readdressed
         if(clouds.position.x <= -self.size.width) {
-            NSLog(@"We are moving past that certain point!");
+            //NSLog(@"We are moving past that certain point!");
         }
         
         
@@ -370,7 +375,7 @@ static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
 }
 
 
-
+//Default Method called at each frame interval
 -(void)update:(CFTimeInterval)currentTime {
     
     //Conditional to set the deltaTime
@@ -383,7 +388,7 @@ static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
     //Capture the time for use on next user for lastFrameUpdateTimeInt
     _lastFrameUpdateTimeInt = currentTime;
     
-    //Call Methods we want to update
+    //Call Methods I want to update
     [self scrollClouds];
     
 }
