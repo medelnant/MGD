@@ -36,6 +36,7 @@ static const uint32_t edgeCategory      = 8;
 @private
     //Flag to account for first touch to init sequence.
     BOOL firstTouch;
+    BOOL gamePaused;
 }
 
 //Default method for handling contact between different physics bodies(SpriteNodes)
@@ -83,7 +84,8 @@ static const uint32_t edgeCategory      = 8;
     _buildingTick   = [SKAction playSoundFileNamed:@"bulbbreaking.mp3" waitForCompletion:NO];
     _groundSplat    = [SKAction playSoundFileNamed:@"splat.mp3" waitForCompletion:NO];
     _buildingPunch  = [SKAction playSoundFileNamed:@"punch.mp3" waitForCompletion:NO];
-    _playerTouch    = [SKAction playSoundFileNamed:@"camerashutter.mp3" waitForCompletion:NO];
+    _gamePauseTouch = [SKAction playSoundFileNamed:@"camerashutter.mp3" waitForCompletion:NO];
+    _playerFlight   = [SKAction playSoundFileNamed:@"woosh.mp3" waitForCompletion:NO];
     
 }
 
@@ -189,6 +191,12 @@ static const uint32_t edgeCategory      = 8;
     _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
     [self addChild:_player];
     
+    //Add Pause Button
+    SKSpriteNode *pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pauseButton"];
+    pauseButton.position = CGPointMake((self.frame.size.width -25),ground.size.height + 20);
+    pauseButton.name = @"pauseButton";
+    [self addChild:pauseButton];
+    
     
 }
 
@@ -207,11 +215,6 @@ static const uint32_t edgeCategory      = 8;
         [self startGamePlay];
         firstTouch = YES;
     }
-    
-    // create the vector to apply to player
-    CGVector myVector = CGVectorMake(0, 15);
-    // apply the vector as an impulse to launch player to bouncy land.
-    [_player.physicsBody applyImpulse:myVector];
     
     for (UITouch *touch in touches)
     {
@@ -246,8 +249,19 @@ static const uint32_t edgeCategory      = 8;
                     //NSLog(@"Player Clicked!");
                     [self runAction:_playerTouch];
                 }
+                else if ([spriteNode.name isEqualToString:@"pauseButton"])
+                {
+                    [self runAction:_gamePauseTouch];
+                    [self togglePauseGame];
+                    
+                    
+                }
                 else {
-                    //Do nothing
+                    // create the vector to apply to player
+                    CGVector myVector = CGVectorMake(0, 15);
+                    // apply the vector as an impulse to launch player to bouncy land.
+                    [_player.physicsBody applyImpulse:myVector];
+                    [self runAction:_playerFlight];
                 }
             }
         }
@@ -319,13 +333,40 @@ static const uint32_t edgeCategory      = 8;
 }
 
 //Custom Helper Methods
-//found via Ray Wenderlich forums
+//found via Ray Wenderlich forums/articles
 static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b) {
     return CGPointMake(a.x * b,a.y *b);
 }
 
 static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
     return CGPointMake(a.x + b.x, a.y + b.y);
+}
+
+//Custom method for pausing the game
+-(void) togglePauseGame {
+    
+    if(gamePaused) {
+        gamePaused = NO;
+        NSLog(@"Game already paused. Unpausing!");
+        self.scene.physicsWorld.speed = 1.0;
+        self.scene.view.paused = NO;
+        
+        //Play Game Background Music
+        if(![_soundTrackPlayer isPlaying]) {
+            [_soundTrackPlayer play];
+        }
+        
+    } else {
+        NSLog(@"Pausing Game!");
+        gamePaused = YES;
+        self.scene.physicsWorld.speed = 0.0;
+        self.scene.view.paused = YES;
+        
+        //Pause Game Background Music
+        if([_soundTrackPlayer isPlaying]) {
+            [_soundTrackPlayer pause];
+        }
+    }
 }
 
 

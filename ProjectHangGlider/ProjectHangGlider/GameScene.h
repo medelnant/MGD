@@ -35,6 +35,8 @@
 @property (strong, nonatomic) SKAction *groundSplat;
 @property (strong, nonatomic) SKAction *buildingPunch;
 @property (strong, nonatomic) SKAction *playerTouch;
+@property (strong, nonatomic) SKAction *playerFlight;
+@property (strong, nonatomic) SKAction *gamePauseTouch;
 
 //AVAudioPlayer for background music
 @property (strong, nonatomic) AVAudioPlayer *soundTrackPlayer;
