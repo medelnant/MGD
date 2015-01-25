@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		53047FC71A7488260044630D /* player.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 53047FC61A7488260044630D /* player.atlas */; };
+		53047FCD1A7494EF0044630D /* EndScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 53047FCC1A7494EF0044630D /* EndScene.m */; };
 		53C46EF41A5F2CF600176B29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF31A5F2CF600176B29 /* main.m */; };
 		53C46EF71A5F2CF600176B29 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF61A5F2CF600176B29 /* AppDelegate.m */; };
 		53C46EFA1A5F2CF600176B29 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF91A5F2CF600176B29 /* GameScene.m */; };
@@ -41,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		53047FC61A7488260044630D /* player.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player.atlas; sourceTree = "<group>"; };
+		53047FCB1A7494EF0044630D /* EndScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndScene.h; sourceTree = "<group>"; };
+		53047FCC1A7494EF0044630D /* EndScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndScene.m; sourceTree = "<group>"; };
 		53C46EEE1A5F2CF600176B29 /* ProjectHangGlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectHangGlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53C46EF21A5F2CF600176B29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		53C46EF31A5F2CF600176B29 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -114,12 +119,15 @@
 			children = (
 				53C46EF51A5F2CF600176B29 /* AppDelegate.h */,
 				53C46EF61A5F2CF600176B29 /* AppDelegate.m */,
+				53047FCB1A7494EF0044630D /* EndScene.h */,
+				53047FCC1A7494EF0044630D /* EndScene.m */,
 				53C46EF81A5F2CF600176B29 /* GameScene.h */,
 				53C46EF91A5F2CF600176B29 /* GameScene.m */,
 				53C46EFD1A5F2CF600176B29 /* GameViewController.h */,
 				53C46EFE1A5F2CF600176B29 /* GameViewController.m */,
 				53C46F001A5F2CF600176B29 /* Main.storyboard */,
 				53C46F031A5F2CF600176B29 /* Images.xcassets */,
+				53047FC61A7488260044630D /* player.atlas */,
 				53C46F051A5F2CF600176B29 /* LaunchScreen.xib */,
 				53C46EF11A5F2CF600176B29 /* Supporting Files */,
 			);
@@ -265,6 +273,7 @@
 				53C46F3D1A60AFA400176B29 /* punch.mp3 in Resources */,
 				53C46F021A5F2CF600176B29 /* Main.storyboard in Resources */,
 				53C46F411A60AFA400176B29 /* wind.mp3 in Resources */,
+				53047FC71A7488260044630D /* player.atlas in Resources */,
 				53C46F3A1A60AFA400176B29 /* bulbbreaking.mp3 in Resources */,
 				53C46F3E1A60AFA400176B29 /* soundtrack.mp3 in Resources */,
 				53C46F381A60AFA400176B29 /* blop.mp3 in Resources */,
@@ -289,6 +298,7 @@
 				53C46EF71A5F2CF600176B29 /* AppDelegate.m in Sources */,
 				53C46EFA1A5F2CF600176B29 /* GameScene.m in Sources */,
 				53C46EF41A5F2CF600176B29 /* main.m in Sources */,
+				53047FCD1A7494EF0044630D /* EndScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

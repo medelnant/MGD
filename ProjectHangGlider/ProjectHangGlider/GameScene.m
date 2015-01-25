@@ -11,6 +11,7 @@
 //
 
 #import "GameScene.h"
+#import "EndScene.h"
 
 @interface GameScene ()
 
@@ -42,6 +43,9 @@ static const uint32_t edgeCategory      = 8;
     
     //Global pause bit/flag within game scene
     BOOL gamePaused;
+    
+    //Player active/inactive state
+    BOOL isPlayerFlying;
 }
 
 //Default method for handling contact between different physics bodies(SpriteNodes)
@@ -61,6 +65,7 @@ static const uint32_t edgeCategory      = 8;
     if (collisionObject.categoryBitMask == buildingCategory) {
         //NSLog(@"Building was hit!");
         [self runAction:_buildingTick];
+        
     }
     
     if (collisionObject.categoryBitMask == edgeCategory) {
@@ -73,6 +78,12 @@ static const uint32_t edgeCategory      = 8;
         //NSLog(@"Ground was hit!");
         [self runAction:_groundSplat];
         
+    }
+    
+    //Transition to game over scene
+    if (collisionObject.categoryBitMask == buildingCategory) {
+        EndScene *gameOverScene = [EndScene sceneWithSize:self.size];
+        [self.view presentScene:gameOverScene transition:[SKTransition doorsCloseHorizontalWithDuration:1.0]];
     }
     
 }
@@ -97,6 +108,10 @@ static const uint32_t edgeCategory      = 8;
 //Default method - main init trigger from view controller instatiating scene to load.
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
+        
+        //Default First Touch
+        firstTouch = NO;
+        
         //Note: Targeting iphone 6 landscape 667x375/1334x750
         self.backgroundColor = [SKColor whiteColor];
     
@@ -129,7 +144,7 @@ static const uint32_t edgeCategory      = 8;
     
     //Description Text
     _descriptionLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
-    _descriptionLabel.text = @"Make sure to touch buildings and player(Joe Hanglider) for required sound effects.";
+    _descriptionLabel.text = @"Keep tapping screen to keep Joe Hanglider in flight. Avoid the buildings.";
     _descriptionLabel.fontColor = [SKColor blackColor];
     _descriptionLabel.fontSize = 10;
     _descriptionLabel.position = CGPointMake(CGRectGetMidX(self.frame), 235);
@@ -183,17 +198,8 @@ static const uint32_t edgeCategory      = 8;
     building3.name = @"building3";
     [self addChild:building3];
     
-    //Add Player
-    _player = [SKSpriteNode spriteNodeWithImageNamed:@"player"];
-    _player.position = CGPointMake(CGRectGetMidX(self.frame), 300);
-    _player.name = @"player";
-    _player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:_player.frame.size.width/2];
-    _player.physicsBody.friction = 0;
-    _player.physicsBody.linearDamping = 0;
-    _player.physicsBody.restitution = 1.0f;
-    _player.physicsBody.categoryBitMask = playerCategory;
-    _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
-    [self addChild:_player];
+    //Init Player
+    [self initPlayer];
     
     //Add Header Bar
     SKSpriteNode *headerBar = [SKSpriteNode spriteNodeWithImageNamed:@"headerBar"];
@@ -232,9 +238,55 @@ static const uint32_t edgeCategory      = 8;
     [self.dynamicScore setHorizontalAlignmentMode:SKLabelHorizontalAlignmentModeRight];
     [self addChild:self.dynamicScore];
     
+}
 
+//Custom method to start player animation when game play begins
+-(void) animatePlayer {
+    if(!isPlayerFlying) {
+        
+        //play action
+        [_player runAction:_playerFlying];
+        isPlayerFlying = YES;
     
+    } else {
+        
+        //stop action
+        [_player removeAllActions];
+        isPlayerFlying = NO;
+    }
+}
+
+//Custom Method to intialize player sprite node with all of its attributes including physics
+-(void) initPlayer {
+    NSArray *animationFrames = [self loadFramesFromAtlas:@"player" base:@"player" num:2];
+    //Add Player
+    _player = [SKSpriteNode spriteNodeWithTexture:[animationFrames objectAtIndex:0]];
+    _player.position = CGPointMake(CGRectGetMidX(self.frame), 300);
+    _player.name = @"player";
+    _player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:_player.frame.size.width/2];
+    _player.physicsBody.friction = 0;
+    _player.physicsBody.linearDamping = 0;
+    _player.physicsBody.restitution = 1.0f;
+    _player.physicsBody.categoryBitMask = playerCategory;
+    _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
+    [self addChild:_player];
     
+    //Define player animation action to be referenced to global constant SKAction _playerFlying
+    SKAction *animationAction = [SKAction animateWithTextures:animationFrames timePerFrame:0.05 resize:YES restore:NO];
+    _playerFlying = [SKAction repeatActionForever:animationAction];
+    
+}
+
+//Custom method to load frames from generic atlas passed to this method.
+-(NSArray *)loadFramesFromAtlas:(NSString *)atlasName base:(NSString *)baseFileName num:(int)numberOfFrames {
+    NSMutableArray *frames = [NSMutableArray arrayWithCapacity:numberOfFrames];
+    SKTextureAtlas *atlas = [SKTextureAtlas atlasNamed:atlasName];
+    for(int i=1; i<= numberOfFrames; i++) {
+        NSString *fileName = [NSString stringWithFormat:@"%@%01d.png", baseFileName, i];
+        [frames addObject:[atlas textureNamed:fileName]];
+    }
+    
+    return frames;
 }
 
 //Default method to account for touches within the scene
@@ -320,6 +372,8 @@ static const uint32_t edgeCategory      = 8;
     //Set world gravity
     //Change gravity settings of the physics world
     self.physicsWorld.gravity = CGVectorMake(0, -1.5);
+    
+    [self animatePlayer];
 }
 
 //Custom method to play background audio track

@@ -38,6 +38,9 @@
 @property (strong, nonatomic) SKAction *playerFlight;
 @property (strong, nonatomic) SKAction *gamePauseTouch;
 
+//Define animation action for player
+@property (strong, nonatomic) SKAction *playerFlying;
+
 //AVAudioPlayer for background music
 @property (strong, nonatomic) AVAudioPlayer *soundTrackPlayer;
 
