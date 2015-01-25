@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 2 - Game Alpha
+//  Week 3 - Game Beta
 //
 //  Copyright (c) 2015 medelnant. All rights reserved.
 //
@@ -44,6 +44,10 @@
 //Define Label for welcome/instruction text
 @property (strong, nonatomic) SKLabelNode *instructionLabel;
 @property (strong, nonatomic) SKLabelNode *descriptionLabel;
+
+//Define Labels for scoring HUD
+@property (retain, nonatomic) SKLabelNode *dynamicScore;
+@property (strong, nonatomic) SKLabelNode *scoreLabel;
 
 
 @end

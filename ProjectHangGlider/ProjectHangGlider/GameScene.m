@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 2 - Game Alpha
+//  Week 3 - Game Beta
 //
 //  Created by vAesthetic on 1/8/15.
 //  Copyright (c) 2015 medelnant. All rights reserved.
@@ -21,6 +21,9 @@
 static const float CLOUDS_PPS = 10;
 //static const float BUILDINGS_PPS = 30;
 
+//Define scoring distance multiplier;
+static const int SCORING_MULTIPLIER = 5;
+static int GAME_SCORE = 0;
 
 // Define my constants for category bitmasks.
 // These allow for us to determine which physics bodies collide within the physics world.
@@ -192,11 +195,44 @@ static const uint32_t edgeCategory      = 8;
     _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
     [self addChild:_player];
     
+    //Add Header Bar
+    SKSpriteNode *headerBar = [SKSpriteNode spriteNodeWithImageNamed:@"headerBar"];
+    headerBar.position = CGPointMake(CGRectGetMidX(self.frame),(self.frame.size.height - (headerBar.size.height/2)));
+    headerBar.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:headerBar.frame.size];
+    headerBar.physicsBody.dynamic = NO;
+    headerBar.physicsBody.categoryBitMask = groundCategory;
+    headerBar.name = @"headerBar";
+    [self addChild:headerBar];
+    
+    
     //Add Pause Button
     SKSpriteNode *pauseButton = [SKSpriteNode spriteNodeWithImageNamed:@"pauseButton"];
-    pauseButton.position = CGPointMake((self.frame.size.width -25),ground.size.height + 20);
+    pauseButton.position = CGPointMake((self.frame.size.width -25),self.frame.size.height - pauseButton.size.height/1.5);
     pauseButton.name = @"pauseButton";
+    pauseButton.zPosition = 1;
     [self addChild:pauseButton];
+    
+    //Add Score Labels
+    self.scoreLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Bold"];
+    self.scoreLabel.text = @"meters";
+    self.scoreLabel.fontColor = [SKColor blackColor];
+    self.scoreLabel.fontSize = 15;
+    self.scoreLabel.position = CGPointMake(self.frame.size.width - (20+pauseButton.size.width), self.frame.size.height - headerBar.frame.size.height + self.scoreLabel.frame.size.height);
+    self.scoreLabel.zPosition = 1;
+    [self.scoreLabel setHorizontalAlignmentMode:SKLabelHorizontalAlignmentModeRight];
+    [self addChild:_scoreLabel];
+    
+    
+    self.dynamicScore = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    self.dynamicScore.text = @"000000";
+    self.dynamicScore.fontColor = [SKColor blueColor];
+    self.dynamicScore.fontSize = 25;
+    self.dynamicScore.position = CGPointMake(self.frame.size.width - (_scoreLabel.frame.size.width+25+pauseButton.size.width), self.frame.size.height - headerBar.frame.size.height + self.dynamicScore.frame.size.height/1.5);
+    self.dynamicScore.zPosition = 1;
+    [self.dynamicScore setHorizontalAlignmentMode:SKLabelHorizontalAlignmentModeRight];
+    [self addChild:self.dynamicScore];
+    
+
     
     
 }
@@ -336,6 +372,11 @@ static const uint32_t edgeCategory      = 8;
     }];
     
 }
+-(void) updateScore {
+    
+    GAME_SCORE = GAME_SCORE + SCORING_MULTIPLIER;
+    _dynamicScore.text = [NSString stringWithFormat:@"%i", GAME_SCORE];
+}
 
 //Custom Helper Methods
 //found via Ray Wenderlich forums/articles
@@ -385,11 +426,19 @@ static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
         _dt = 0;
     }
     
+    
+    
     //Capture the time for use on next user for lastFrameUpdateTimeInt
     _lastFrameUpdateTimeInt = currentTime;
     
     //Call Methods I want to update
     [self scrollClouds];
+    
+    if(firstTouch) {
+        [self updateScore];
+    }
+    
+    
     
 }
 

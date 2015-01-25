@@ -10,7 +10,6 @@
 		53C46EF41A5F2CF600176B29 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF31A5F2CF600176B29 /* main.m */; };
 		53C46EF71A5F2CF600176B29 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF61A5F2CF600176B29 /* AppDelegate.m */; };
 		53C46EFA1A5F2CF600176B29 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EF91A5F2CF600176B29 /* GameScene.m */; };
-		53C46EFC1A5F2CF600176B29 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 53C46EFB1A5F2CF600176B29 /* GameScene.sks */; };
 		53C46EFF1A5F2CF600176B29 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53C46EFE1A5F2CF600176B29 /* GameViewController.m */; };
 		53C46F021A5F2CF600176B29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F001A5F2CF600176B29 /* Main.storyboard */; };
 		53C46F041A5F2CF600176B29 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53C46F031A5F2CF600176B29 /* Images.xcassets */; };
@@ -49,7 +48,6 @@
 		53C46EF61A5F2CF600176B29 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		53C46EF81A5F2CF600176B29 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		53C46EF91A5F2CF600176B29 /* GameScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
-		53C46EFB1A5F2CF600176B29 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		53C46EFD1A5F2CF600176B29 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		53C46EFE1A5F2CF600176B29 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		53C46F011A5F2CF600176B29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,12 +112,10 @@
 		53C46EF01A5F2CF600176B29 /* ProjectHangGlider */ = {
 			isa = PBXGroup;
 			children = (
-				53C46F431A60AFAD00176B29 /* sounds */,
 				53C46EF51A5F2CF600176B29 /* AppDelegate.h */,
 				53C46EF61A5F2CF600176B29 /* AppDelegate.m */,
 				53C46EF81A5F2CF600176B29 /* GameScene.h */,
 				53C46EF91A5F2CF600176B29 /* GameScene.m */,
-				53C46EFB1A5F2CF600176B29 /* GameScene.sks */,
 				53C46EFD1A5F2CF600176B29 /* GameViewController.h */,
 				53C46EFE1A5F2CF600176B29 /* GameViewController.m */,
 				53C46F001A5F2CF600176B29 /* Main.storyboard */,
@@ -133,6 +129,7 @@
 		53C46EF11A5F2CF600176B29 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				53C46F431A60AFAD00176B29 /* sounds */,
 				53C46EF21A5F2CF600176B29 /* Info.plist */,
 				53C46EF31A5F2CF600176B29 /* main.m */,
 			);
@@ -266,7 +263,6 @@
 				53C46F421A60AFA400176B29 /* woosh.mp3 in Resources */,
 				53C46F401A60AFA400176B29 /* tick.mp3 in Resources */,
 				53C46F3D1A60AFA400176B29 /* punch.mp3 in Resources */,
-				53C46EFC1A5F2CF600176B29 /* GameScene.sks in Resources */,
 				53C46F021A5F2CF600176B29 /* Main.storyboard in Resources */,
 				53C46F411A60AFA400176B29 /* wind.mp3 in Resources */,
 				53C46F3A1A60AFA400176B29 /* bulbbreaking.mp3 in Resources */,
@@ -417,6 +413,7 @@
 				INFOPLIST_FILE = ProjectHangGlider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -427,6 +424,7 @@
 				INFOPLIST_FILE = ProjectHangGlider/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

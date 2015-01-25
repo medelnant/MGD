@@ -3,12 +3,12 @@
     {
       "idiom" : "iphone",
       "scale" : "1x",
-      "filename" : "building3~iphone.png"
+      "filename" : "headerBar~iphone.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "2x",
-      "filename" : "building3@2x~iphone.png"
+      "filename" : "headerBar@2x~iphone.png"
     },
     {
       "idiom" : "iphone",
@@ -17,12 +17,12 @@
     {
       "idiom" : "ipad",
       "scale" : "1x",
-      "filename" : "building3~ipad.png"
+      "filename" : "headerBar~ipad.png"
     },
     {
       "idiom" : "ipad",
       "scale" : "2x",
-      "filename" : "building3@2x~ipad.png"
+      "filename" : "headerBar@2x~ipad.png"
     }
   ],
   "info" : {

@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 2 - Game Alpha
+//  Week 3 - Game Beta
 //
 //  Created by vAesthetic on 1/8/15.
 //  Copyright (c) 2015 medelnant. All rights reserved.
