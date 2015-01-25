@@ -2,6 +2,10 @@
 //  EndScene.m
 //  ProjectHangGlider
 //
+//  Michael Edelnant
+//  Mobile Game Design Term 1501
+//  Week 3 - Game Beta
+//
 //  Created by vAesthetic on 1/24/15.
 //  Copyright (c) 2015 medelnant. All rights reserved.
 //
@@ -64,7 +68,6 @@
 -(void)didMoveToView:(SKView *)view {
     
     //Define sound actions for preloading when scene/view is loaded
-    
     _ambulanceTrack = [SKAction playSoundFileNamed:@"ambulance.mp3" waitForCompletion:NO];
     [self runAction:_ambulanceTrack];
 
@@ -73,6 +76,7 @@
 //Default method to account for touches within the scene
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
+    //Tapping anywhere will init transition back to main game scene to try again.
     GameScene *gameScene = [GameScene sceneWithSize:self.size];
     [self.view presentScene:gameScene transition:[SKTransition doorsOpenHorizontalWithDuration:1.0]];
 
