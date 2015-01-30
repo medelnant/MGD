@@ -11,7 +11,7 @@
 //
 
 #import "GameViewController.h"
-#import "GameScene.h"
+#import "MainMenu.h"
 
 @implementation SKScene (Unarchive)
 
@@ -51,7 +51,7 @@
     
     // Using sceneWithSize which triggers my initWithSize method within the scene class. From reading, my understanding is that this approach
     // is more efficient and called earlier than didMoveToScene.
-    SKScene * scene = [GameScene sceneWithSize:skView.bounds.size];
+    SKScene * scene = [MainMenu sceneWithSize:skView.bounds.size];
     
     // Set the scalemode which default is set to AspectFill
     scene.scaleMode = SKSceneScaleModeAspectFill;

@@ -229,9 +229,9 @@ static const uint32_t edgeCategory      = 8;
     [self addChild:_scoreLabel];
     
     
-    self.dynamicScore = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
+    self.dynamicScore = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Bold"];
     self.dynamicScore.text = @"000000";
-    self.dynamicScore.fontColor = [SKColor blueColor];
+    self.dynamicScore.fontColor = [SKColor colorWithHue:0.58 saturation:0.29 brightness:0.54 alpha:1];
     self.dynamicScore.fontSize = 25;
     self.dynamicScore.position = CGPointMake(self.frame.size.width - (_scoreLabel.frame.size.width+25+pauseButton.size.width), self.frame.size.height - headerBar.frame.size.height + self.dynamicScore.frame.size.height/1.5);
     self.dynamicScore.zPosition = 1;
@@ -261,7 +261,7 @@ static const uint32_t edgeCategory      = 8;
     NSArray *animationFrames = [self loadFramesFromAtlas:@"player" base:@"player" num:2];
     //Add Player
     _player = [SKSpriteNode spriteNodeWithTexture:[animationFrames objectAtIndex:0]];
-    _player.position = CGPointMake(CGRectGetMidX(self.frame), 300);
+    _player.position = CGPointMake(CGRectGetMidX(self.frame), 200);
     _player.name = @"player";
     _player.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:_player.frame.size.width/2];
     _player.physicsBody.friction = 0;
@@ -269,6 +269,7 @@ static const uint32_t edgeCategory      = 8;
     _player.physicsBody.restitution = 1.0f;
     _player.physicsBody.categoryBitMask = playerCategory;
     _player.physicsBody.contactTestBitMask = edgeCategory | buildingCategory | groundCategory;
+    _player.zPosition = 2;
     [self addChild:_player];
     
     //Define player animation action to be referenced to global constant SKAction _playerFlying

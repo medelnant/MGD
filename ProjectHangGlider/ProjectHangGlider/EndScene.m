@@ -33,6 +33,8 @@
 
 -(void) setScene {
     
+    NSLog(@"End Scene Initialized!");
+    
     //Add Background
     SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"background"];
     background.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame));
@@ -51,7 +53,10 @@
     _instructionLabel.fontColor = [SKColor blackColor];
     _instructionLabel.fontSize = 25;
     _instructionLabel.position = CGPointMake(CGRectGetMidX(self.frame), 250);
+    _instructionLabel.zPosition = 1;
     [self addChild:_instructionLabel];
+    
+    NSLog(@"Instruction text should be added");
     
     //Description Text
     _descriptionLabel = [SKLabelNode labelNodeWithFontNamed:@"Helvetica Neue Light"];
@@ -59,7 +64,10 @@
     _descriptionLabel.fontColor = [SKColor blackColor];
     _descriptionLabel.fontSize = 10;
     _descriptionLabel.position = CGPointMake(CGRectGetMidX(self.frame), 235);
+    _descriptionLabel.zPosition = 1;
     [self addChild:_descriptionLabel];
+    
+    NSLog(@"Description label should be added");
     
     
 }
