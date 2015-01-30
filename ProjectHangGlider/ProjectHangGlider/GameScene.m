@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 3 - Game Beta
+//  Week 4 - Game Beta
 //
 //  Created by vAesthetic on 1/8/15.
 //  Copyright (c) 2015 medelnant. All rights reserved.
@@ -55,36 +55,40 @@ static const uint32_t edgeCategory      = 8;
     // This helps us quickly exclude the player and deal directly with objects that the player is colliding into.
     SKPhysicsBody *collisionObject;
     
-    //Compare bitmask category numbers (having the player be cat=1 helps with this approach)
-    if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask) {
-        collisionObject = contact.bodyB;
-    } else {
-        collisionObject = contact.bodyA;
-    }
-    
-    if (collisionObject.categoryBitMask == buildingCategory) {
-        //NSLog(@"Building was hit!");
-        [self runAction:_buildingTick];
+    if(isPlayerFlying) {
+        //Compare bitmask category numbers (having the player be cat=1 helps with this approach)
+        if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask) {
+            collisionObject = contact.bodyB;
+        } else {
+            collisionObject = contact.bodyA;
+        }
         
-    }
-    
-    if (collisionObject.categoryBitMask == edgeCategory) {
-        //NSLog(@"Scene edge was hit!");
-        //[self runAction:_edgeBoing];
+        if (collisionObject.categoryBitMask == buildingCategory) {
+            //NSLog(@"Building was hit!");
+            [self runAction:_buildingTick];
+            
+        }
         
-    }
-    
-    if (collisionObject.categoryBitMask == groundCategory) {
-        //NSLog(@"Ground was hit!");
-        [self runAction:_groundSplat];
+        if (collisionObject.categoryBitMask == edgeCategory) {
+            //NSLog(@"Scene edge was hit!");
+            //[self runAction:_edgeBoing];
+            
+        }
         
+        if (collisionObject.categoryBitMask == groundCategory) {
+            //NSLog(@"Ground was hit!");
+            [self runAction:_groundSplat];
+            
+        }
+        
+        //Transition to game over scene
+        if (collisionObject.categoryBitMask == buildingCategory) {
+            EndScene *gameOverScene = [EndScene sceneWithSize:self.size];
+            [self.view presentScene:gameOverScene transition:[SKTransition doorsCloseHorizontalWithDuration:1.0]];
+        }
     }
     
-    //Transition to game over scene
-    if (collisionObject.categoryBitMask == buildingCategory) {
-        EndScene *gameOverScene = [EndScene sceneWithSize:self.size];
-        [self.view presentScene:gameOverScene transition:[SKTransition doorsCloseHorizontalWithDuration:1.0]];
-    }
+
     
 }
 
@@ -164,39 +168,16 @@ static const uint32_t edgeCategory      = 8;
     [self addChild:_clouds];
     
     //Add Ground
-    SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"ground"];
-    ground.position = CGPointMake(CGRectGetMidX(self.frame),ground.size.height/2);
-    ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ground.frame.size];
-    ground.physicsBody.dynamic = NO;
-    ground.physicsBody.categoryBitMask = groundCategory;
-    [self addChild:ground];
+    _ground = [SKSpriteNode spriteNodeWithImageNamed:@"ground"];
+    _ground.position = CGPointMake(CGRectGetMidX(self.frame),_ground.size.height/2);
+    _ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:_ground.frame.size];
+    _ground.physicsBody.dynamic = NO;
+    _ground.physicsBody.categoryBitMask = groundCategory;
+    _ground.zPosition = 3;
+    [self addChild:_ground];
     
-    //Add Building 1
-    SKSpriteNode *building1 = [SKSpriteNode spriteNodeWithImageNamed:@"building1"];
-    building1.position = CGPointMake(200,(building1.size.height/2)+ground.size.height);
-    building1.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building1.frame.size];
-    building1.physicsBody.dynamic = NO;
-    building1.physicsBody.categoryBitMask = buildingCategory;
-    building1.name = @"building1";
-    [self addChild:building1];
-    
-    //Add Building 2
-    SKSpriteNode *building2 = [SKSpriteNode spriteNodeWithImageNamed:@"building2"];
-    building2.position = CGPointMake(285,(building2.size.height/2)+ground.size.height);
-    building2.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building2.frame.size];
-    building2.physicsBody.dynamic = NO;
-    building2.physicsBody.categoryBitMask = buildingCategory;
-    building2.name = @"building2";
-    [self addChild:building2];
-    
-    //Add Building 3
-    SKSpriteNode *building3 = [SKSpriteNode spriteNodeWithImageNamed:@"building3"];
-    building3.position = CGPointMake(410,(building3.size.height/2)+ground.size.height);
-    building3.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:building3.frame.size];
-    building3.physicsBody.dynamic = NO;
-    building3.physicsBody.categoryBitMask = buildingCategory;
-    building3.name = @"building3";
-    [self addChild:building3];
+    //Add Buildings
+    [self setUpBuildings];
     
     //Init Player
     [self initPlayer];
@@ -237,6 +218,57 @@ static const uint32_t edgeCategory      = 8;
     self.dynamicScore.zPosition = 1;
     [self.dynamicScore setHorizontalAlignmentMode:SKLabelHorizontalAlignmentModeRight];
     [self addChild:self.dynamicScore];
+    
+}
+
+-(void) setUpBuildings {
+    
+    //Parent Node
+    _buildingGroup = [SKNode node];
+    _buildingGroup.name = @"buildingGroup";
+    
+    //Building SpriteNodes
+    SKSpriteNode *building1 = [SKSpriteNode spriteNodeWithImageNamed:@"building1"];
+    SKSpriteNode *building2 = [SKSpriteNode spriteNodeWithImageNamed:@"building2"];
+    SKSpriteNode *building3 = [SKSpriteNode spriteNodeWithImageNamed:@"building3"];
+    
+    //Define array storing building spriteNode variations
+    NSArray * buildingArray = [NSArray arrayWithObjects:building1, building2, building3, nil];
+    
+    //Loop Count although in the future I would only draw whats needed and then remove + append to the end to reduce node count
+    int idealBuildingCount = 25;
+    
+    //Integer for storing last building x position
+    int buildingLastX = 0;
+    
+    //Spacing in between building. In the future this will be randomized to offer some variety
+    //Not using anymore to test out arc4random generation for spacing
+    int buildingSpacing = 15;
+    
+    //Loop through loop count and randomize buildings to be added to parent SkNode group name buildingGroup
+    for (int i = 0; i < idealBuildingCount; i++) {
+        
+        //Randomize building type
+        SKSpriteNode * buildingObject = [buildingArray objectAtIndex:arc4random() %3];
+        
+        //Position building and add all other attributes
+        
+        //Random building spacing not looking too pretty. Removing for now.
+        //buildingObject.position = CGPointMake(buildingLastX + ((buildingObject.size.width/2) + (buildingSpacing + abs(arc4random() %75))),(buildingObject.size.height/2) + _ground.size.height - 35);
+
+        buildingObject.position = CGPointMake(buildingLastX + (buildingObject.size.width/2) + buildingSpacing,(buildingObject.size.height/2) + _ground.size.height - 35);
+        buildingLastX = buildingLastX + buildingObject.size.width + buildingSpacing;
+        buildingObject.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:buildingObject.frame.size];
+        buildingObject.physicsBody.dynamic = NO;
+        buildingObject.physicsBody.categoryBitMask = buildingCategory;
+        buildingObject.name = [NSString stringWithFormat:@"building%i", i];
+        
+        //Add building to parent node
+        [_buildingGroup addChild:[buildingObject copy]];
+    };
+    
+    //Add parent node to scene view
+    [self addChild:_buildingGroup];
     
 }
 
@@ -399,6 +431,36 @@ static const uint32_t edgeCategory      = 8;
     
 }
 
+//Custom Helper Method for Animating Buildings right to left
+-(void) scrollBuildings {
+    
+    //For each instance or child node with the name of clouds...do something
+    //Similar to a loop construct but simply enumerating through all instances of provided name.
+    [self enumerateChildNodesWithName:@"buildingGroup" usingBlock:^(SKNode *node, BOOL *stop) {
+        
+        //Placeholder node that will be set to the node being enumerated.
+        SKSpriteNode *buildings = (SKSpriteNode*) node;
+        
+        //Setting the speed/velocity of the node. Only affecting the x for the horizontal scrolling effect
+        CGPoint bgVelocity = CGPointMake((-5) * CLOUDS_PPS, 0);
+        
+        //Calculated point
+        CGPoint distanceToMove = CGPointMultiplyScalar(bgVelocity, _dt);
+        buildings.position = CGPointAdd(buildings.position, distanceToMove);
+        
+        
+        //Check if position is past left edge of scene
+        //Buggy.. needs to be readdressed
+        if(buildings.position.x <= -self.size.width) {
+            //NSLog(@"We are moving past that certain point!");
+        }
+        
+        
+    }];
+    
+}
+
+
 //Custom Helper Method for Animating Clouds right to left
 -(void) scrollClouds {
     
@@ -486,11 +548,13 @@ static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b) {
     //Capture the time for use on next user for lastFrameUpdateTimeInt
     _lastFrameUpdateTimeInt = currentTime;
     
-    //Call Methods I want to update
-    [self scrollClouds];
+    
     
     if(firstTouch) {
         [self updateScore];
+        //Call Methods I want to update
+        [self scrollClouds];
+        [self scrollBuildings];
     }
     
     

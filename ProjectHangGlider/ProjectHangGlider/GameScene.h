@@ -4,7 +4,7 @@
 //
 //  Michael Edelnant
 //  Mobile Game Design Term 1501
-//  Week 3 - Game Beta
+//  Week 4 - Game Beta
 //
 //  Copyright (c) 2015 medelnant. All rights reserved.
 //
@@ -28,6 +28,13 @@
 
 //Define clouds BG element
 @property (strong, nonatomic) SKSpriteNode *clouds;
+
+//Define ground spriteNode
+@property (strong, nonatomic) SKSpriteNode *ground;
+
+//Define buildingGroup node
+@property (strong, nonatomic) SKNode *buildingGroup;
+
 
 //Define Sound Actions
 @property (strong, nonatomic) SKAction *edgeBoing;
